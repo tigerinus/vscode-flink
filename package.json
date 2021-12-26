@@ -1,45 +1,130 @@
 {
-	"name": "flink",
-	"displayName": "Flink",
-	"description": "View and manage Flink jobs",
-	"version": "0.0.1",
-	"engines": {
-		"vscode": "^1.63.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onCommand:flink.helloWorld"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "flink.helloWorld",
-				"title": "Hello World"
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile && npm run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
-	},
-	"devDependencies": {
-		"@types/vscode": "^1.63.0",
-		"@types/glob": "^7.1.4",
-		"@types/mocha": "^9.0.0",
-		"@types/node": "14.x",
-		"@typescript-eslint/eslint-plugin": "^5.1.0",
-		"@typescript-eslint/parser": "^5.1.0",
-		"eslint": "^8.1.0",
-		"glob": "^7.1.7",
-		"mocha": "^9.1.3",
-		"typescript": "^4.4.4",
-		"@vscode/test-electron": "^1.6.2"
-	}
+  "name": "vscode-flink",
+  "displayName": "Flink Support",
+  "description": "View and manage Flink jobs in Visual Studio Code",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.63.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:flink",
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "flink-explorer",
+          "title": "Flink",
+          "icon": "resources/dark/logo.svg"
+        }
+      ]
+    },
+    "views": {
+      "flink-explorer": [
+        {
+          "id": "flink",
+          "name": "Job Managers",
+          "type": "tree"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "flink.add-jobmanager",
+        "title": "Add Job Manager",
+        "category": "Flink",
+        "icon": {
+          "light": "resources/light/add.svg",
+          "dark": "resources/dark/add.svg"
+        }
+      },
+      {
+        "command": "flink.remove-jobmanager",
+        "title": "Remove Job Manager",
+        "category": "Flink",
+        "icon": {
+          "light": "resources/light/remove.svg",
+          "dark": "resources/dark/remove.svg"
+        }
+      },
+      {
+        "command": "flink.refresh-jobs",
+        "title": "Refresh Jobs",
+        "category": "Flink",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
+      },
+      {
+        "command": "flink.copy-job-id",
+        "title": "Copy Job ID",
+        "category": "Flink"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "flink.remove-jobmanager",
+          "when": "false"
+        },
+        {
+          "command": "flink.refresh-jobs",
+          "when": "false"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "flink.add-jobmanager",
+          "group": "navigation",
+          "when": "view == flink"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "flink.remove-jobmanager",
+          "group": "inline",
+          "when": "view == flink && viewItem == jobmanager"
+        },
+        {
+          "command": "flink.refresh-jobs",
+          "group": "inline",
+          "when": "view == flink && viewItem == jobgroup"
+        },
+        {
+          "command": "flink.copy-job-id",
+          "when": "view == flink && viewItem == job"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.4",
+    "@types/lodash": "^4.14.178",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "14.x",
+    "@types/vscode": "^1.63.0",
+    "@typescript-eslint/eslint-plugin": "^5.1.0",
+    "@typescript-eslint/parser": "^5.1.0",
+    "@vscode/test-electron": "^1.6.2",
+    "eslint": "^8.1.0",
+    "glob": "^7.1.7",
+    "lodash": "^4.17.21",
+    "mocha": "^9.1.3",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {}
 }
