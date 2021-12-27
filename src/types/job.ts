@@ -1,15 +1,20 @@
 import path = require("path");
 import { TreeItem, TreeItemCollapsibleState } from "vscode";
 import { TreeData } from "../treeData";
+import { JobManager } from "./jobManager";
 
 export class Job extends TreeData {
+
+    jobManager: JobManager;
 
     jobId: string;
     jobName: string;
     jobState: string;
 
-    constructor(jobId: string, jobName: string, jobState: string) {
+    constructor(jobManager: JobManager, jobId: string, jobName: string, jobState: string) {
         super(jobName, "Job");
+
+        this.jobManager = jobManager;
 
         this.jobId = jobId;
         this.jobName = jobName;

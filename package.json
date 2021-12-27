@@ -45,7 +45,7 @@
       },
       {
         "command": "flink.remove-jobmanager",
-        "title": "Remove Job Manager",
+        "title": "Remove",
         "category": "Flink",
         "icon": {
           "light": "resources/light/remove.svg",
@@ -53,13 +53,28 @@
         }
       },
       {
+        "command": "flink.describe-jobmanager",
+        "title": "Describe",
+        "category": "Flink"
+      },
+      {
         "command": "flink.refresh-jobs",
-        "title": "Refresh Jobs",
+        "title": "Refresh",
         "category": "Flink",
         "icon": {
           "light": "resources/light/refresh.svg",
           "dark": "resources/dark/refresh.svg"
         }
+      },
+      {
+        "command": "flink.describe-jobs",
+        "title": "Describe",
+        "category": "Flink"
+      },
+      {
+        "command": "flink.describe-job",
+        "title": "Describe",
+        "category": "Flink"
       },
       {
         "command": "flink.copy-job-id",
@@ -74,7 +89,23 @@
           "when": "false"
         },
         {
+          "command": "flink.describe-jobmanager",
+          "when": "false"
+        },
+        {
           "command": "flink.refresh-jobs",
+          "when": "false"
+        },
+        {
+          "command": "flink.describe-jobs",
+          "when": "false"
+        },
+        {
+          "command": "flink.describe-job",
+          "when": "false"
+        },
+        {
+          "command": "flink.copy-job-id",
           "when": "false"
         }
       ],
@@ -92,12 +123,28 @@
           "when": "view == flink && viewItem == jobmanager"
         },
         {
+          "command": "flink.describe-jobmanager",
+          "group": "jobmanager@1",
+          "when": "view == flink && viewItem == jobmanager"
+        },
+        {
           "command": "flink.refresh-jobs",
           "group": "inline",
           "when": "view == flink && viewItem == jobgroup"
         },
         {
+          "command": "flink.describe-jobs",
+          "group": "jobgroup-1",
+          "when": "view == flink && viewItem == jobgroup"
+        },
+        {
+          "command": "flink.describe-job",
+          "group": "job-1",
+          "when": "view == flink && viewItem == job"
+        },
+        {
           "command": "flink.copy-job-id",
+          "group": "job-2",
           "when": "view == flink && viewItem == job"
         }
       ]
@@ -116,6 +163,7 @@
     "@types/lodash": "^4.14.178",
     "@types/mocha": "^9.0.0",
     "@types/node": "14.x",
+    "@types/uuid": "^8.3.3",
     "@types/vscode": "^1.63.0",
     "@typescript-eslint/eslint-plugin": "^5.1.0",
     "@typescript-eslint/parser": "^5.1.0",
@@ -124,7 +172,8 @@
     "glob": "^7.1.7",
     "lodash": "^4.17.21",
     "mocha": "^9.1.3",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "uuid": "^8.3.2"
   },
   "dependencies": {}
 }

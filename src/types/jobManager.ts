@@ -1,15 +1,18 @@
+import { v4 as uuidv4 } from 'uuid';
 import { TreeItem, TreeItemCollapsibleState } from "vscode";
 import { TreeData } from "../treeData";
 import { JobGroup } from "./jobGroup";
 
 export class JobManager extends TreeData {
 
+    id: string;
     address: string;
     displayName: string;
 
     constructor(address: string, displayName: string) {
         super(address, "JobManager");
 
+        this.id = uuidv4();
         this.address = address;
         this.displayName = displayName;
     }
@@ -23,6 +26,6 @@ export class JobManager extends TreeData {
     }
 
     getChildren(): TreeData[] {
-        return [new JobGroup(this.address)];
+        return [new JobGroup(this)];
     }
 }

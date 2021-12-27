@@ -1,7 +1,8 @@
 import * as _ from 'lodash';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { commands, env, ExtensionContext, window } from 'vscode';
+import { commands, env, ExtensionContext, Uri, window, workspace } from 'vscode';
+import { ContentProvider } from './textDocumentContentProvider';
 import { JobManagerDataProvider } from './treeDataProvider';
 import { Job } from './types/job';
 import { JobGroup } from './types/jobGroup';
@@ -15,24 +16,32 @@ export function activate(context: ExtensionContext) {
     // This line of code will only be executed once when your extension is activated
     console.log('activating vscode-flink...');
 
+    // treeDataProvider
     const jobManagerDataProvider = new JobManagerDataProvider(context);
-
     context.subscriptions.push(
         window.registerTreeDataProvider('flink', jobManagerDataProvider)
     );
 
+    // contentProvider
+    const contentProvider = new ContentProvider(context);
+    workspace.registerTextDocumentContentProvider('vscode-flink', contentProvider);
+
+    // commands
     context.subscriptions.push(
         commands.registerCommand('flink.add-jobmanager', () => {
             let jobManagerList: JobManager[] | undefined = context.globalState.get('jobManagerList', [] as JobManager[]);
 
             window.showInputBox({
                 prompt: 'Please enter the JobManager address',
-                placeHolder: 'localhost:8081',
+                placeHolder: 'http://localhost:8081',
                 title: 'Add JobManager',
                 ignoreFocusOut: true,
                 validateInput: (address: string) => {
-                    if (address.indexOf(':') === -1) {
-                        return 'Please enter the JobManager address in the format of host:port';
+
+                    try {
+                        Uri.parse(address, true);
+                    } catch (e) {
+                        return "address is not valid.";
                     }
 
                     if (_.find(jobManagerList, { address })) {
@@ -78,35 +87,56 @@ export function activate(context: ExtensionContext) {
     );
 
     context.subscriptions.push(
-        commands.registerCommand('flink.remove-jobmanager', (selectedJobManager: JobManager) => {
+        commands.registerCommand('flink.remove-jobmanager', (jobManager: JobManager) => {
             let jobManagerList: JobManager[] | undefined = context.globalState.get('jobManagerList');
 
             if (undefined === jobManagerList) {
                 return;
             }
 
-            jobManagerList = jobManagerList.filter((jobManager: JobManager) => jobManager.address !== selectedJobManager.address);
+            jobManagerList = jobManagerList.filter((m: JobManager) => m.id !== jobManager.id);
             context.globalState.update('jobManagerList', jobManagerList)
                 .then(() => {
                     jobManagerDataProvider.refresh();
                 })
                 .then(() => {
-                    window.showInformationMessage(`Removed Job Manager '${selectedJobManager.displayName}' at ${selectedJobManager.address} successfully.`);
+                    window.showInformationMessage(`Removed Job Manager '${jobManager.displayName}' at ${jobManager.address} successfully.`);
                 });
         })
     );
 
     context.subscriptions.push(
-        commands.registerCommand('flink.refresh-jobs', (selectedJobGroup: JobGroup) => {
-            jobManagerDataProvider.refresh(selectedJobGroup);
+        commands.registerCommand('flink.describe-jobmanager', async (jobManager: JobManager) => {
+            let uri = Uri.parse(`vscode-flink://jobmanagers/${jobManager.id}/jobmanager/config/${jobManager.id}-config-${Date.now()}.json`);
+            await window.showTextDocument(uri);
         })
     );
 
     context.subscriptions.push(
-        commands.registerCommand('flink.copy-job-id', (selectedJob: Job) => {
-            env.clipboard.writeText(selectedJob.jobId)
+        commands.registerCommand('flink.refresh-jobs', (jobGroup: JobGroup) => {
+            jobManagerDataProvider.refresh(jobGroup);
+        })
+    );
+
+    context.subscriptions.push(
+        commands.registerCommand('flink.describe-jobs', async (jobGroup: JobGroup) => {
+            let uri = Uri.parse(`vscode-flink://jobmanagers/${jobGroup.jobManager.id}/jobs/overview/${jobGroup.jobManager.id}-jobs-overview-${Date.now()}.json`);
+            await window.showTextDocument(uri);
+        })
+    );
+
+    context.subscriptions.push(
+        commands.registerCommand('flink.describe-job', async (job: Job) => {
+            let uri = Uri.parse(`vscode-flink://jobmanagers/${job.jobManager.id}/jobs/${job.jobId}/${job.jobId}-${Date.now()}.json`);
+            await window.showTextDocument(uri);
+        })
+    );
+
+    context.subscriptions.push(
+        commands.registerCommand('flink.copy-job-id', (job: Job) => {
+            env.clipboard.writeText(job.jobId)
                 .then(() => {
-                    window.showInformationMessage(`Copied job ID: ${selectedJob.jobId} to clipboard`);
+                    window.showInformationMessage(`Copied job ID: ${job.jobId} to clipboard`);
                 });
         }
         ));
