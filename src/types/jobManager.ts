@@ -1,3 +1,4 @@
+import path = require('path');
 import { v4 as uuidv4 } from 'uuid';
 import { TreeItem, TreeItemCollapsibleState } from "vscode";
 import { TreeData } from "../treeData";
@@ -22,6 +23,10 @@ export class JobManager extends TreeData {
         treeItem.contextValue = 'jobmanager';
         treeItem.id = this.address;
         treeItem.description = this.displayName;
+        treeItem.iconPath = {
+            light: path.join(__filename, '..', '..', '..', 'resources', 'light', 'logo.svg'),
+            dark: path.join(__filename, '..', '..', '..', 'resources', 'dark', 'logo.svg')
+        };
         return treeItem;
     }
 
