@@ -41,6 +41,7 @@ export class JobManagerDataProvider implements TreeDataProvider<TreeData> {
         switch (treeData.type) {
             case 'JobManager':
             case 'JobGroup':
+            case 'JarGroup':
                 return treeData.getChildren();
 
             default:
