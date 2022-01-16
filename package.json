@@ -67,6 +67,15 @@
         }
       },
       {
+        "command": "flink.add-job",
+        "title": "Add",
+        "category": "Flink",
+        "icon": {
+          "light": "resources/light/add.svg",
+          "dark": "resources/dark/add.svg"
+        }
+      },
+      {
         "command": "flink.describe-jobs",
         "title": "Describe",
         "category": "Flink"
@@ -94,6 +103,10 @@
         },
         {
           "command": "flink.refresh-jobs",
+          "when": "false"
+        },
+        {
+          "command": "flink.add-job",
           "when": "false"
         },
         {
@@ -129,6 +142,11 @@
         },
         {
           "command": "flink.refresh-jobs",
+          "group": "inline",
+          "when": "view == flink && viewItem == jobgroup"
+        },
+        {
+          "command": "flink.add-job",
           "group": "inline",
           "when": "view == flink && viewItem == jobgroup"
         },
