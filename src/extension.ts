@@ -119,6 +119,12 @@ export function activate(context: ExtensionContext) {
     );
 
     context.subscriptions.push(
+        commands.registerCommand('flink.add-job', () => {
+            window.showInformationMessage('Not implemented yet.');
+        })
+    );
+
+    context.subscriptions.push(
         commands.registerCommand('flink.describe-jobs', async (jobGroup: JobGroup) => {
             let uri = Uri.parse(`vscode-flink://jobmanagers/${jobGroup.jobManager.id}/jobs/overview/${jobGroup.jobManager.id}-jobs-overview-${Date.now()}.json`);
             await window.showTextDocument(uri);
