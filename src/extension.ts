@@ -1,3 +1,5 @@
+import { createReadStream, fstat } from 'fs';
+import { readFile } from 'fs/promises';
 import * as _ from 'lodash';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
@@ -157,7 +159,22 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(
         commands.registerCommand('flink.add-jar', () => {
-            window.showInformationMessage('Not implemented yet.');
+            window.showOpenDialog({
+                canSelectFiles: true,
+                canSelectFolders: false,
+                canSelectMany: false,
+                filters: {
+                    'jars': ['jar'],
+                },
+                title: 'Add Jar',
+            }).then(async uriList => {
+                if (undefined === uriList || uriList.length === 0) {
+                    return;
+                }
+
+                window.showInformationMessage(`Not implemented yet. ${uriList[0]}`);
+            });
+
         })
     );
 

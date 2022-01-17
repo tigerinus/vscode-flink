@@ -195,12 +195,12 @@
         },
         {
           "command": "flink.refresh-jobs",
-          "group": "inline",
+          "group": "inline@1",
           "when": "view == flink && viewItem == jobgroup"
         },
         {
           "command": "flink.add-job",
-          "group": "inline",
+          "group": "inline@2",
           "when": "view == flink && viewItem == jobgroup"
         },
         {
@@ -220,12 +220,12 @@
         },
         {
           "command": "flink.refresh-jars",
-          "group": "inline",
+          "group": "inline@1",
           "when": "view == flink && viewItem == jargroup"
         },
         {
           "command": "flink.add-jar",
-          "group": "inline",
+          "group": "inline@2",
           "when": "view == flink && viewItem == jargroup"
         },
         {
