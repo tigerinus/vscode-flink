@@ -17,7 +17,7 @@ export class JarGroup extends TreeData {
 
     getTreeItem(): TreeItem {
         let treeItem: TreeItem = new TreeItem(this.text, TreeItemCollapsibleState.Collapsed);
-        treeItem.contextValue = 'jarGroup';
+        treeItem.contextValue = 'jargroup';
         return treeItem;
     }
 

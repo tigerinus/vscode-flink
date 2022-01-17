@@ -4,6 +4,8 @@ import * as _ from 'lodash';
 import { commands, env, ExtensionContext, Uri, window, workspace } from 'vscode';
 import { ContentProvider } from './textDocumentContentProvider';
 import { JobManagerDataProvider } from './treeDataProvider';
+import { Jar } from './types/jar';
+import { JarGroup } from './types/jarGroup';
 import { Job } from './types/job';
 import { JobGroup } from './types/jobGroup';
 import { JobManager } from './types/jobManager';
@@ -144,8 +146,43 @@ export function activate(context: ExtensionContext) {
                 .then(() => {
                     window.showInformationMessage(`Copied job ID: ${job.jobId} to clipboard`);
                 });
+        })
+    );
+
+    context.subscriptions.push(
+        commands.registerCommand('flink.refresh-jars', (jarGroup: JarGroup) => {
+            jobManagerDataProvider.refresh(jarGroup);
+        })
+    );
+
+    context.subscriptions.push(
+        commands.registerCommand('flink.add-jar', () => {
+            window.showInformationMessage('Not implemented yet.');
+        })
+    );
+
+    context.subscriptions.push(
+        commands.registerCommand('flink.describe-jars', async (jarGroup: JarGroup) => {
+            let uri = Uri.parse(`vscode-flink://jobmanagers/${jarGroup.jobManager.id}/jars/${jarGroup.jobManager.id}-jars-overview-${Date.now()}.json`);
+            await window.showTextDocument(uri);
         }
         ));
+
+    context.subscriptions.push(
+        commands.registerCommand('flink.describe-jar', async (jar: Jar) => {
+            let uri = Uri.parse(`vscode-flink://jobmanagers/${jar.jobManager.id}/jars/${jar.jarId}/${jar.jarId}-${Date.now()}.json`);
+            await window.showTextDocument(uri);
+        })
+    );
+
+    context.subscriptions.push(
+        commands.registerCommand('flink.copy-jar-id', (jar: Jar) => {
+            env.clipboard.writeText(jar.jarId)
+                .then(() => {
+                    window.showInformationMessage(`Copied jar ID: ${jar.jarId} to clipboard`);
+                });
+        })
+    );
 }
 
 // this method is called when your extension is deactivated

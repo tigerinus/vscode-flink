@@ -89,6 +89,39 @@
         "command": "flink.copy-job-id",
         "title": "Copy Job ID",
         "category": "Flink"
+      },
+      {
+        "command": "flink.refresh-jars",
+        "title": "Refresh",
+        "category": "Flink",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
+      },
+      {
+        "command": "flink.add-jar",
+        "title": "Add",
+        "category": "Flink",
+        "icon": {
+          "light": "resources/light/add.svg",
+          "dark": "resources/dark/add.svg"
+        }
+      },
+      {
+        "command": "flink.describe-jars",
+        "title": "Describe",
+        "category": "Flink"
+      },
+      {
+        "command": "flink.describe-jar",
+        "title": "Describe",
+        "category": "Flink"
+      },
+      {
+        "command": "flink.copy-jar-id",
+        "title": "Copy Jar ID",
+        "category": "Flink"
       }
     ],
     "menus": {
@@ -119,6 +152,26 @@
         },
         {
           "command": "flink.copy-job-id",
+          "when": "false"
+        },
+        {
+          "command": "flink.refresh-jars",
+          "when": "false"
+        },
+        {
+          "command": "flink.add-jar",
+          "when": "false"
+        },
+        {
+          "command": "flink.describe-jars",
+          "when": "false"
+        },
+        {
+          "command": "flink.describe-jar",
+          "when": "false"
+        },
+        {
+          "command": "flink.copy-jar-id",
           "when": "false"
         }
       ],
@@ -164,6 +217,31 @@
           "command": "flink.copy-job-id",
           "group": "job-2",
           "when": "view == flink && viewItem == job"
+        },
+        {
+          "command": "flink.refresh-jars",
+          "group": "inline",
+          "when": "view == flink && viewItem == jargroup"
+        },
+        {
+          "command": "flink.add-jar",
+          "group": "inline",
+          "when": "view == flink && viewItem == jargroup"
+        },
+        {
+          "command": "flink.describe-jars",
+          "group": "jargroup-1",
+          "when": "view == flink && viewItem == jargroup"
+        },
+        {
+          "command": "flink.describe-jar",
+          "group": "jar-1",
+          "when": "view == flink && viewItem == jar"
+        },
+        {
+          "command": "flink.copy-jar-id",
+          "group": "jar-2",
+          "when": "view == flink && viewItem == jar"
         }
       ]
     }
