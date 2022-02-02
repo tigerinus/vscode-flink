@@ -1,5 +1,5 @@
-import { createReadStream, fstat } from 'fs';
-import { readFile } from 'fs/promises';
+import { readFileSync } from 'fs';
+import * as FormData from 'form-data';
 import * as _ from 'lodash';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
@@ -11,6 +11,8 @@ import { JarGroup } from './types/jarGroup';
 import { Job } from './types/job';
 import { JobGroup } from './types/jobGroup';
 import { JobManager } from './types/jobManager';
+
+
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -172,7 +174,24 @@ export function activate(context: ExtensionContext) {
                     return;
                 }
 
-                window.showInformationMessage(`Not implemented yet. ${uriList[0]}`);
+                let jarFile = readFileSync(uriList[0].fsPath);
+
+                let formData = new FormData();
+                formData.append('jarfile', jarFile);
+
+                let headers = {
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    'Content-Type': `multipart/form-data; boundary=${formData.getBoundary()}`
+                };
+
+                fetch(`https://flink.free.beeceptor.com/v1/jars/upload`, {
+                    headers: headers, 
+                    method: 'POST',
+                    body: formData,
+                }).then(response => {
+                    window.showInformationMessage(`response status: ${response.status} ${response.statusText}`);
+                });
+
             });
 
         })
