@@ -1,5 +1,4 @@
 import { readFileSync } from 'fs';
-import * as FormData from 'form-data';
 import * as _ from 'lodash';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
@@ -177,20 +176,8 @@ export function activate(context: ExtensionContext) {
                 let jarFile = readFileSync(uriList[0].fsPath);
 
                 let formData = new FormData();
-                formData.append('jarfile', jarFile);
 
-                let headers = {
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                    'Content-Type': `multipart/form-data; boundary=${formData.getBoundary()}`
-                };
-
-                fetch(`https://flink.free.beeceptor.com/v1/jars/upload`, {
-                    headers: headers, 
-                    method: 'POST',
-                    body: formData,
-                }).then(response => {
-                    window.showInformationMessage(`response status: ${response.status} ${response.statusText}`);
-                });
+                // @todo - implement upload
 
             });
 
