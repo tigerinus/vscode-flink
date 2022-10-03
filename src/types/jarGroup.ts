@@ -1,3 +1,5 @@
+import 'isomorphic-fetch';
+
 import { ProviderResult, TreeItem, TreeItemCollapsibleState } from "vscode";
 import { JarFileInfo, JarListInfo } from "../interface/getJars";
 import { TreeData } from "../treeData";

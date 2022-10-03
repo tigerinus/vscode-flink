@@ -184,8 +184,7 @@ export function activate(context: ExtensionContext) {
                     hostname: 'localhost',
                     port: 8081,
                     path: '/jars/upload',
-
-                }
+                };
 
                 const req = request(options, (res) => {
                     let chunks: Uint8Array[] = [];

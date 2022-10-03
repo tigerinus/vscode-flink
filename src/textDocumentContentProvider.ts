@@ -1,3 +1,5 @@
+import 'isomorphic-fetch';
+
 import path = require("path");
 import { CancellationToken, Event, ExtensionContext, ProviderResult, TextDocumentContentProvider, Uri } from "vscode";
 import { JobManager } from "./types/jobManager";

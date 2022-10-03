@@ -1,3 +1,5 @@
+import 'isomorphic-fetch';
+
 import { ProviderResult, TreeItem, TreeItemCollapsibleState } from "vscode";
 import { JobDetails, MultipleJobsDetails } from "../interface/getJobsOverview";
 import { TreeData } from "../treeData";
