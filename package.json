@@ -4,7 +4,7 @@
   "description": "View and manage Flink jobs in Visual Studio Code",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.63.0"
+    "vscode": "^1.71.0"
   },
   "categories": [
     "Other"
@@ -256,19 +256,19 @@
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",
-    "@types/lodash": "^4.14.182",
+    "@types/lodash": "^4.14.186",
     "@types/mocha": "^9.1.1",
-    "@types/node": "~14.18.23",
+    "@types/node": "~14.18.31",
     "@types/uuid": "^8.3.4",
-    "@types/vscode": "^1.69.0",
-    "@typescript-eslint/eslint-plugin": "^5.31.0",
-    "@typescript-eslint/parser": "^5.31.0",
+    "@types/vscode": "^1.71.0",
+    "@typescript-eslint/eslint-plugin": "^5.39.0",
+    "@typescript-eslint/parser": "^5.39.0",
     "@vscode/test-electron": "^1.6.2",
-    "eslint": "^8.20.0",
+    "eslint": "^8.24.0",
     "glob": "^7.2.3",
     "lodash": "^4.17.21",
     "mocha": "^9.2.2",
-    "typescript": "^4.7.4",
+    "typescript": "^4.8.4",
     "uuid": "^8.3.2"
   }
 }
