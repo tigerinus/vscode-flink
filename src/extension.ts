@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import { request, RequestOptions } from 'http';
 import * as _ from 'lodash';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
@@ -178,6 +179,30 @@ export function activate(context: ExtensionContext) {
                 let formData = new FormData();
 
                 // TODO - implement upload
+                let options: RequestOptions = {
+                    method: 'POST',
+                    hostname: 'localhost',
+                    port: 8081,
+                    path: '/jars/upload',
+
+                }
+
+                const req = request(options, (res) => {
+                    let chunks: Uint8Array[] = [];
+
+                    res.on("data", (chunk) => {
+                        chunks.push(chunk);
+                    });
+
+                    res.on("end", function () {
+                        let body = Buffer.concat(chunks);
+                    });
+
+                    res.on("error", function (error) {
+                        console.error(error);
+                    });
+                });
+
 
             });
 
