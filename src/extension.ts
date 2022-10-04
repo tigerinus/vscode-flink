@@ -1,5 +1,6 @@
-import { readFileSync } from 'fs';
-import { request, RequestOptions } from 'http';
+import axios from 'axios';
+import FormData = require('form-data');
+import * as fs from 'fs';
 import * as _ from 'lodash';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
@@ -174,35 +175,19 @@ export function activate(context: ExtensionContext) {
                     return;
                 }
 
-                let jarFile = readFileSync(uriList[0].fsPath);
-
                 let formData = new FormData();
+                formData.append('jarfile', fs.createReadStream(uriList[0].fsPath), uriList[0].path);
 
-                // TODO - implement upload
-                let options: RequestOptions = {
-                    method: 'POST',
-                    hostname: 'localhost',
-                    port: 8081,
-                    path: '/jars/upload',
-                };
-
-                const req = request(options, (res) => {
-                    let chunks: Uint8Array[] = [];
-
-                    res.on("data", (chunk) => {
-                        chunks.push(chunk);
-                    });
-
-                    res.on("end", function () {
-                        let body = Buffer.concat(chunks);
-                    });
-
-                    res.on("error", function (error) {
-                        console.error(error);
-                    });
+                let url = 'http://localhost:8081/v1/jars/upload'; // TODO - get jobmanager address
+                axios.post(url, formData, {
+                    headers: formData.getHeaders(),
+                    maxBodyLength: Infinity,
+                    maxContentLength: Infinity,
+                }).then(response => {
+                    console.log(response);
+                }).catch(error => {
+                    console.log(error);
                 });
-
-
             });
 
         })

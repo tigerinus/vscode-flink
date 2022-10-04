@@ -41,14 +41,12 @@ export class JobGroup extends TreeData {
 
         let url = `${this.jobManager.address}/v1/jobs/overview`;
 
-        return axios.get(url)
-            .then(response => {
-                let result = response.data as MultipleJobsDetails;
+        return axios.get(url).then(response => {
+            let result = response.data as MultipleJobsDetails;
 
-                return result.jobs!.map((job: JobDetails) => new Job(this.jobManager, job.jid!, job.name!, job.state!));
-            })
-            .catch(error => {
-                return [new Description(`(error when calling ${url} - status code ${error.response.status})`)];
-            });
+            return result.jobs!.map((job: JobDetails) => new Job(this.jobManager, job.jid!, job.name!, job.state!));
+        }).catch(error => {
+            return [new Description(`(error when calling ${url} - status code ${error.response.status})`)];
+        });
     }
 }

@@ -32,14 +32,11 @@ export class JarGroup extends TreeData {
 
         let url = `${this.jobManager.address}/v1/jars`;
 
-        return axios.get(url)
-            .then(response => {
-                let result = response.data as JarListInfo;
-
-                return result.files!.map((file: JarFileInfo) => new Jar(this.jobManager, file.id!, file.name!));
-            })
-            .catch(error => {
-                return [new Description(`(error when calling ${url} - status code ${error.response.status})`)];
-            });
+        return axios.get(url).then(response => {
+            let result = response.data as JarListInfo;
+            return result.files!.map((file: JarFileInfo) => new Jar(this.jobManager, file.id!, file.name!));
+        }).catch(error => {
+            return [new Description(`(error when calling ${url} - status code ${error.response.status})`)];
+        });
     }
 }
