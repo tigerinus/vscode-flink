@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { ProviderResult, TreeItem, TreeItemCollapsibleState } from "vscode";
 import { JobDetails, MultipleJobsDetails } from "../interface/getJobsOverview";
 import { TreeData } from "../treeData";
@@ -37,16 +39,16 @@ export class JobGroup extends TreeData {
             ];
         }
 
-        return fetch(`${this.jobManager.address}/v1/jobs/overview`)
+        let url = `${this.jobManager.address}/v1/jobs/overview`;
+
+        return axios.get(url)
             .then(response => {
-                if (!response.ok) {
-                    return [new Description(`(failed to fetch - status code ${response.status})`)];
-                }
+                let result = response.data as MultipleJobsDetails;
 
-                let result = response.json() as Promise<MultipleJobsDetails>;
-
-                return result.then(data =>
-                    data.jobs!.map((job: JobDetails) => new Job(this.jobManager, job.jid!, job.name!, job.state!)));
+                return result.jobs!.map((job: JobDetails) => new Job(this.jobManager, job.jid!, job.name!, job.state!));
+            })
+            .catch(error => {
+                return [new Description(`(error when calling ${url} - status code ${error.response.status})`)];
             });
     }
 }

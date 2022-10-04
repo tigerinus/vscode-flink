@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { ProviderResult, TreeItem, TreeItemCollapsibleState } from "vscode";
 import { JarFileInfo, JarListInfo } from "../interface/getJars";
 import { TreeData } from "../treeData";
@@ -28,16 +30,16 @@ export class JarGroup extends TreeData {
             ];
         }
 
-        return fetch(`${this.jobManager.address}/v1/jars`)
+        let url = `${this.jobManager.address}/v1/jars`;
+
+        return axios.get(url)
             .then(response => {
-                if (!response.ok) {
-                    return [new Description(`(failed to fetch - status code ${response.status})`)];
-                }
+                let result = response.data as JarListInfo;
 
-                let result = response.json() as Promise<JarListInfo>;
-
-                return result.then(data =>
-                    data.files!.map((file: JarFileInfo) => new Jar(this.jobManager, file.id!, file.name!)));
+                return result.files!.map((file: JarFileInfo) => new Jar(this.jobManager, file.id!, file.name!));
+            })
+            .catch(error => {
+                return [new Description(`(error when calling ${url} - status code ${error.response.status})`)];
             });
     }
 }

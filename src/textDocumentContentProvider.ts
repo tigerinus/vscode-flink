@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import path = require("path");
 import { CancellationToken, Event, ExtensionContext, ProviderResult, TextDocumentContentProvider, Uri } from "vscode";
 import { JobManager } from "./types/jobManager";
@@ -34,8 +36,10 @@ export class ContentProvider implements TextDocumentContentProvider {
                 return 'cancelled.';
             }
 
-            return fetch(`${jobManager.address}/${apiPath}`)
-                .then(response => response.json())
+            let url = `${jobManager.address}/v1/${apiPath}`;
+
+            return axios(url)
+                .then(response => response.data)
                 .catch(error => error.message)
                 .then(json => JSON.stringify(json, null, 2));
         }
