@@ -4,19 +4,29 @@ import { TreeItem, TreeItemCollapsibleState } from "vscode";
 import { TreeData } from "../treeData";
 import { JarGroup } from './jarGroup';
 import { JobGroup } from "./jobGroup";
+import { JobManagerDataProvider } from '../treeDataProvider';
+
 
 export class JobManager extends TreeData {
 
     id: string;
     address: string;
     displayName: string;
+    jobManagerDataProvider: JobManagerDataProvider | null;
 
-    constructor(address: string, displayName: string) {
+    constructor(address: string, displayName: string, jobManagerDataProvider: JobManagerDataProvider | null) {
         super(address, "JobManager");
 
         this.id = uuidv4();
         this.address = address;
         this.displayName = displayName;
+        this.jobManagerDataProvider = jobManagerDataProvider;
+    }
+
+    refresh(): void {
+        if (this.jobManagerDataProvider) {
+            this.jobManagerDataProvider.refresh(this);
+        }
     }
 
     getTreeItem(): TreeItem {

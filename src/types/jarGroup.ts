@@ -1,6 +1,8 @@
 import axios from 'axios';
+import FormData = require('form-data');
+import * as fs from 'fs';
 
-import { ProviderResult, TreeItem, TreeItemCollapsibleState } from "vscode";
+import { ProviderResult, TreeItem, TreeItemCollapsibleState, window } from "vscode";
 import { JarFileInfo, JarListInfo } from "../interface/getJars";
 import { TreeData } from "../treeData";
 import { Description } from "./description";
@@ -15,6 +17,37 @@ export class JarGroup extends TreeData {
     constructor(jobManager: JobManager) {
         super("Jars", "JarGroup");
         this.jobManager = jobManager;
+    }
+
+    addJar() {
+        window.showOpenDialog({
+            canSelectFiles: true,
+            canSelectFolders: false,
+            canSelectMany: false,
+            filters: {
+                'jars': ['jar'],
+            },
+            title: 'Add Jar',
+        }).then(async uriList => {
+            if (undefined === uriList || uriList.length === 0) {
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append('jarfile', fs.createReadStream(uriList[0].fsPath), uriList[0].path);
+
+            let url = `${this.jobManager.address}/v1/jars/upload`;
+
+            axios.post(url, formData, {
+                headers: formData.getHeaders(),
+                maxBodyLength: Infinity,
+                maxContentLength: Infinity,
+            }).then(() => {
+                this.jobManager.refresh();
+            }).catch(error => {
+                window.showErrorMessage(`(error when calling ${url} - status code ${error.response.status})`);
+            });
+        });
     }
 
     getTreeItem(): TreeItem {

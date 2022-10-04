@@ -70,7 +70,7 @@ export function activate(context: ExtensionContext) {
                     if (!displayName) {
                         return;
                     }
-                    return new JobManager(address, displayName);
+                    return new JobManager(address, displayName, jobManagerDataProvider);
                 });
             }).then(jobManager => {
                 if (undefined === jobManager) {
@@ -161,35 +161,8 @@ export function activate(context: ExtensionContext) {
     );
 
     context.subscriptions.push(
-        commands.registerCommand('flink.add-jar', () => {
-            window.showOpenDialog({
-                canSelectFiles: true,
-                canSelectFolders: false,
-                canSelectMany: false,
-                filters: {
-                    'jars': ['jar'],
-                },
-                title: 'Add Jar',
-            }).then(async uriList => {
-                if (undefined === uriList || uriList.length === 0) {
-                    return;
-                }
-
-                let formData = new FormData();
-                formData.append('jarfile', fs.createReadStream(uriList[0].fsPath), uriList[0].path);
-
-                let url = 'http://localhost:8081/v1/jars/upload'; // TODO - get jobmanager address
-                axios.post(url, formData, {
-                    headers: formData.getHeaders(),
-                    maxBodyLength: Infinity,
-                    maxContentLength: Infinity,
-                }).then(response => {
-                    console.log(response);
-                }).catch(error => {
-                    console.log(error);
-                });
-            });
-
+        commands.registerCommand('flink.add-jar', (jarGroup: JarGroup) => {
+            jarGroup.addJar();
         })
     );
 

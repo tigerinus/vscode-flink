@@ -24,7 +24,7 @@ export class ContentProvider implements TextDocumentContentProvider {
             let jobManagerList = this._context.globalState.get('jobManagerList', [])
                 .map((object: Object) => {
                     // workaround for deserialization into prototype, or methods will be missing.
-                    return Object.assign(new JobManager('', ''), object);
+                    return Object.assign(new JobManager('', '', null), object);
                 });
             let jobManager = jobManagerList.find(m => m.id === jobManagerId);
 
