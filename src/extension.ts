@@ -181,7 +181,7 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(
         commands.registerCommand('flink.describe-jar', async (jar: Jar) => {
-            let uri = Uri.parse(`vscode-flink://jobmanagers/${jar.group.jobManager.id}/jars/${jar.id}/${jar.id}-${Date.now()}.json`);
+            let uri = Uri.parse(`vscode-flink://jobmanagers/${jar.group.jobManager.id}/jars/${jar.id}/plan/${jar.id}-${Date.now()}.json`);
             await window.showTextDocument(uri);
         })
     );

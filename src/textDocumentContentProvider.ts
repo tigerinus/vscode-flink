@@ -40,7 +40,7 @@ export class ContentProvider implements TextDocumentContentProvider {
 
             return axios(url)
                 .then(response => response.data)
-                .catch(error => error.message)
+                .catch(error => error.response.data)
                 .then(json => JSON.stringify(json, null, 2));
         }
 
