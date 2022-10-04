@@ -43,10 +43,24 @@ export class JarGroup extends TreeData {
                 maxBodyLength: Infinity,
                 maxContentLength: Infinity,
             }).then(() => {
-                this.jobManager.refresh();
+                if (this.jobManager.jobManagerDataProvider !== null) {
+                    this.jobManager.jobManagerDataProvider.refresh();
+                }
             }).catch(error => {
-                window.showErrorMessage(`(error when calling ${url} - status code ${error.response.status})`);
+                window.showErrorMessage(`(error when adding jar - status code ${error.response.status})`);
             });
+        });
+    }
+
+    removeJar(jar: Jar) {
+        let url = `${this.jobManager.address}/v1/jars/${jar.id}`;
+
+        axios.delete(url).then(() => {
+            if (this.jobManager.jobManagerDataProvider !== null) {
+                this.jobManager.jobManagerDataProvider.refresh();
+            }
+        }).catch(error => {
+            window.showErrorMessage(`(error when removing jar - status code ${error.response.status})`);
         });
     }
 
@@ -67,9 +81,9 @@ export class JarGroup extends TreeData {
 
         return axios.get(url).then(response => {
             let result = response.data as JarListInfo;
-            return result.files!.map((file: JarFileInfo) => new Jar(this.jobManager, file.id!, file.name!));
+            return result.files!.map((file: JarFileInfo) => new Jar(this, file.id!, file.name!));
         }).catch(error => {
-            return [new Description(`(error when calling ${url} - status code ${error.response.status})`)];
+            return [new Description(`(error when getting jars - status code ${error.response.status})`)];
         });
     }
 }

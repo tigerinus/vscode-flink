@@ -23,12 +23,6 @@ export class JobManager extends TreeData {
         this.jobManagerDataProvider = jobManagerDataProvider;
     }
 
-    refresh(): void {
-        if (this.jobManagerDataProvider) {
-            this.jobManagerDataProvider.refresh(this);
-        }
-    }
-
     getTreeItem(): TreeItem {
         let treeItem: TreeItem = new TreeItem(this.text, TreeItemCollapsibleState.Collapsed);
         treeItem.contextValue = 'jobmanager';

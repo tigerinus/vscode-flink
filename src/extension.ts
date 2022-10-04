@@ -140,16 +140,16 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(
         commands.registerCommand('flink.describe-job', async (job: Job) => {
-            let uri = Uri.parse(`vscode-flink://jobmanagers/${job.jobManager.id}/jobs/${job.jobId}/${job.jobId}-${Date.now()}.json`);
+            let uri = Uri.parse(`vscode-flink://jobmanagers/${job.group.jobManager.id}/jobs/${job.id}/${job.id}-${Date.now()}.json`);
             await window.showTextDocument(uri);
         })
     );
 
     context.subscriptions.push(
         commands.registerCommand('flink.copy-job-id', (job: Job) => {
-            env.clipboard.writeText(job.jobId)
+            env.clipboard.writeText(job.id)
                 .then(() => {
-                    window.showInformationMessage(`Copied job ID: ${job.jobId} to clipboard`);
+                    window.showInformationMessage(`Copied job ID: ${job.id} to clipboard`);
                 });
         })
     );
@@ -167,6 +167,12 @@ export function activate(context: ExtensionContext) {
     );
 
     context.subscriptions.push(
+        commands.registerCommand('flink.remove-jar', (jar: Jar) => {
+            jar.group.removeJar(jar);
+        })
+    );
+
+    context.subscriptions.push(
         commands.registerCommand('flink.describe-jars', async (jarGroup: JarGroup) => {
             let uri = Uri.parse(`vscode-flink://jobmanagers/${jarGroup.jobManager.id}/jars/${jarGroup.jobManager.id}-jars-overview-${Date.now()}.json`);
             await window.showTextDocument(uri);
@@ -175,16 +181,16 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(
         commands.registerCommand('flink.describe-jar', async (jar: Jar) => {
-            let uri = Uri.parse(`vscode-flink://jobmanagers/${jar.jobManager.id}/jars/${jar.jarId}/${jar.jarId}-${Date.now()}.json`);
+            let uri = Uri.parse(`vscode-flink://jobmanagers/${jar.group.jobManager.id}/jars/${jar.id}/${jar.id}-${Date.now()}.json`);
             await window.showTextDocument(uri);
         })
     );
 
     context.subscriptions.push(
         commands.registerCommand('flink.copy-jar-id', (jar: Jar) => {
-            env.clipboard.writeText(jar.jarId)
+            env.clipboard.writeText(jar.id)
                 .then(() => {
-                    window.showInformationMessage(`Copied jar ID: ${jar.jarId} to clipboard`);
+                    window.showInformationMessage(`Copied jar ID: ${jar.id} to clipboard`);
                 });
         })
     );

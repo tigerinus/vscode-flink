@@ -109,6 +109,15 @@
         }
       },
       {
+        "command": "flink.remove-jar",
+        "title": "Remove",
+        "category": "Flink",
+        "icon": {
+          "light": "resources/light/remove.svg",
+          "dark": "resources/dark/remove.svg"
+        }
+      },
+      {
         "command": "flink.describe-jars",
         "title": "Describe",
         "category": "Flink"
@@ -160,6 +169,10 @@
         },
         {
           "command": "flink.add-jar",
+          "when": "false"
+        },
+        {
+          "command": "flink.remove-jar",
           "when": "false"
         },
         {
@@ -227,6 +240,11 @@
           "command": "flink.add-jar",
           "group": "inline@2",
           "when": "view == flink && viewItem == jargroup"
+        },
+        {
+          "command": "flink.remove-jar",
+          "group": "inline@3",
+          "when": "view == flink && viewItem == jar"
         },
         {
           "command": "flink.describe-jars",

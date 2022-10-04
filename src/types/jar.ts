@@ -1,29 +1,30 @@
 import { TreeItem, TreeItemCollapsibleState } from "vscode";
 import { TreeData } from "../treeData";
+import { JarGroup } from "./jarGroup";
 import { JobManager } from "./jobManager";
 
 export class Jar extends TreeData {
 
-    jobManager: JobManager;
+    group: JarGroup;
 
-    jarId: string;
-    jarName: string;
+    id: string;
+    name: string;
 
-    constructor(jobManager: JobManager, jarId: string, jarName: string) {
-        super(jarName, "Jar");
+    constructor(group: JarGroup, id: string, name: string) {
+        super(name, "Jar");
 
-        this.jobManager = jobManager;
+        this.group = group;
 
-        this.jarId = jarId;
-        this.jarName = jarName;
+        this.id = id;
+        this.name = name;
     }
 
     getTreeItem(): TreeItem {
         let treeItem: TreeItem = new TreeItem(this.text, TreeItemCollapsibleState.None);
 
         treeItem.contextValue = 'jar';
-        treeItem.id = this.jarId;
-        treeItem.tooltip = this.jarId;
+        treeItem.id = this.id;
+        treeItem.tooltip = this.id;
 
         return treeItem;
     }
