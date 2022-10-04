@@ -23,7 +23,7 @@ export class Jar extends TreeData {
 
         treeItem.contextValue = 'jar';
         treeItem.id = this.jarId;
-        treeItem.tooltip = this.jarName;
+        treeItem.tooltip = this.jarId;
 
         return treeItem;
     }
