@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { ProviderResult, TreeItem, TreeItemCollapsibleState } from "vscode";
-import { JobDetails, MultipleJobsDetails } from "../interface/getJobsOverview";
+import { JobDetails, MultipleJobsDetails } from "../interface/jobsOverview";
 import { TreeData } from "../treeData";
 import { Description } from "./description";
 import { Job } from "./job";
