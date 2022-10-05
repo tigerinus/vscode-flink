@@ -123,8 +123,8 @@
         "category": "Flink"
       },
       {
-        "command": "flink.describe-jar",
-        "title": "Describe",
+        "command": "flink.show-plan",
+        "title": "Show Plan",
         "category": "Flink"
       },
       {
@@ -180,7 +180,7 @@
           "when": "false"
         },
         {
-          "command": "flink.describe-jar",
+          "command": "flink.show-plan",
           "when": "false"
         },
         {
@@ -252,7 +252,7 @@
           "when": "view == flink && viewItem == jargroup"
         },
         {
-          "command": "flink.describe-jar",
+          "command": "flink.show-plan",
           "group": "jar-1",
           "when": "view == flink && viewItem == jar"
         },
