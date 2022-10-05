@@ -2,7 +2,6 @@ import path = require("path");
 import { TreeItem, TreeItemCollapsibleState } from "vscode";
 import { TreeData } from "../treeData";
 import { JobGroup } from "./jobGroup";
-import { JobManager } from "./jobManager";
 
 export class Job extends TreeData {
 

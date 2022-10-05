@@ -1,7 +1,6 @@
 import { TreeItem, TreeItemCollapsibleState } from "vscode";
 import { TreeData } from "../treeData";
 import { JarGroup } from "./jarGroup";
-import { JobManager } from "./jobManager";
 
 export class Jar extends TreeData {
 
