@@ -4,7 +4,7 @@
   "description": "View and manage Flink jobs in Visual Studio Code",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.63.0"
+    "vscode": "^1.71.0"
   },
   "categories": [
     "Other"
@@ -67,6 +67,15 @@
         }
       },
       {
+        "command": "flink.add-job",
+        "title": "Add",
+        "category": "Flink",
+        "icon": {
+          "light": "resources/light/add.svg",
+          "dark": "resources/dark/add.svg"
+        }
+      },
+      {
         "command": "flink.describe-jobs",
         "title": "Describe",
         "category": "Flink"
@@ -79,6 +88,57 @@
       {
         "command": "flink.copy-job-id",
         "title": "Copy Job ID",
+        "category": "Flink"
+      },
+      {
+        "command": "flink.refresh-jars",
+        "title": "Refresh",
+        "category": "Flink",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
+      },
+      {
+        "command": "flink.add-jar",
+        "title": "Add",
+        "category": "Flink",
+        "icon": {
+          "light": "resources/light/add.svg",
+          "dark": "resources/dark/add.svg"
+        }
+      },
+      {
+        "command": "flink.remove-jar",
+        "title": "Remove",
+        "category": "Flink",
+        "icon": {
+          "light": "resources/light/remove.svg",
+          "dark": "resources/dark/remove.svg"
+        }
+      },
+      {
+        "command": "flink.run-jar",
+        "title": "Run",
+        "category": "Flink",
+        "icon": {
+          "light": "resources/light/run.svg",
+          "dark": "resources/dark/run.svg"
+        }
+      },
+      {
+        "command": "flink.describe-jars",
+        "title": "Describe",
+        "category": "Flink"
+      },
+      {
+        "command": "flink.show-plan",
+        "title": "Show Plan",
+        "category": "Flink"
+      },
+      {
+        "command": "flink.copy-jar-id",
+        "title": "Copy Jar ID",
         "category": "Flink"
       }
     ],
@@ -97,6 +157,10 @@
           "when": "false"
         },
         {
+          "command": "flink.add-job",
+          "when": "false"
+        },
+        {
           "command": "flink.describe-jobs",
           "when": "false"
         },
@@ -106,6 +170,34 @@
         },
         {
           "command": "flink.copy-job-id",
+          "when": "false"
+        },
+        {
+          "command": "flink.refresh-jars",
+          "when": "false"
+        },
+        {
+          "command": "flink.add-jar",
+          "when": "false"
+        },
+        {
+          "command": "flink.remove-jar",
+          "when": "false"
+        },
+        {
+          "command": "flink.run-jar",
+          "when": "false"
+        },
+        {
+          "command": "flink.describe-jars",
+          "when": "false"
+        },
+        {
+          "command": "flink.show-plan",
+          "when": "false"
+        },
+        {
+          "command": "flink.copy-jar-id",
           "when": "false"
         }
       ],
@@ -129,7 +221,12 @@
         },
         {
           "command": "flink.refresh-jobs",
-          "group": "inline",
+          "group": "inline@1",
+          "when": "view == flink && viewItem == jobgroup"
+        },
+        {
+          "command": "flink.add-job",
+          "group": "inline@2",
           "when": "view == flink && viewItem == jobgroup"
         },
         {
@@ -146,6 +243,41 @@
           "command": "flink.copy-job-id",
           "group": "job-2",
           "when": "view == flink && viewItem == job"
+        },
+        {
+          "command": "flink.refresh-jars",
+          "group": "inline@1",
+          "when": "view == flink && viewItem == jargroup"
+        },
+        {
+          "command": "flink.add-jar",
+          "group": "inline@2",
+          "when": "view == flink && viewItem == jargroup"
+        },
+        {
+          "command": "flink.run-jar",
+          "group": "inline@2",
+          "when": "view == flink && viewItem == jar"
+        },
+        {
+          "command": "flink.remove-jar",
+          "group": "inline@3",
+          "when": "view == flink && viewItem == jar"
+        },
+        {
+          "command": "flink.describe-jars",
+          "group": "jargroup-1",
+          "when": "view == flink && viewItem == jargroup"
+        },
+        {
+          "command": "flink.show-plan",
+          "group": "jar-1",
+          "when": "view == flink && viewItem == jar"
+        },
+        {
+          "command": "flink.copy-jar-id",
+          "group": "jar-2",
+          "when": "view == flink && viewItem == jar"
         }
       ]
     }
@@ -159,21 +291,22 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/glob": "^7.1.4",
-    "@types/lodash": "^4.14.178",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "14.x",
-    "@types/uuid": "^8.3.3",
-    "@types/vscode": "^1.63.0",
-    "@typescript-eslint/eslint-plugin": "^5.1.0",
-    "@typescript-eslint/parser": "^5.1.0",
+    "@types/glob": "^7.2.0",
+    "@types/lodash": "^4.14.186",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "~18.8.0",
+    "@types/uuid": "^8.3.4",
+    "@types/vscode": "^1.71.0",
+    "@typescript-eslint/eslint-plugin": "^5.39.0",
+    "@typescript-eslint/parser": "^5.39.0",
     "@vscode/test-electron": "^1.6.2",
-    "eslint": "^8.1.0",
-    "glob": "^7.1.7",
+    "axios": "^0.27.2",
+    "eslint": "^8.24.0",
+    "form-data": "^4.0.0",
+    "glob": "^7.2.3",
     "lodash": "^4.17.21",
-    "mocha": "^9.1.3",
-    "typescript": "^4.4.4",
+    "mocha": "^9.2.2",
+    "typescript": "^4.8.4",
     "uuid": "^8.3.2"
-  },
-  "dependencies": {}
+  }
 }

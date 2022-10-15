@@ -4,9 +4,13 @@ import * as _ from 'lodash';
 import { commands, env, ExtensionContext, Uri, window, workspace } from 'vscode';
 import { ContentProvider } from './textDocumentContentProvider';
 import { JobManagerDataProvider } from './treeDataProvider';
+import { Jar } from './types/jar';
+import { JarGroup } from './types/jarGroup';
 import { Job } from './types/job';
 import { JobGroup } from './types/jobGroup';
 import { JobManager } from './types/jobManager';
+
+
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -63,7 +67,7 @@ export function activate(context: ExtensionContext) {
                     if (!displayName) {
                         return;
                     }
-                    return new JobManager(address, displayName);
+                    return new JobManager(address, displayName, jobManagerDataProvider);
                 });
             }).then(jobManager => {
                 if (undefined === jobManager) {
@@ -119,6 +123,12 @@ export function activate(context: ExtensionContext) {
     );
 
     context.subscriptions.push(
+        commands.registerCommand('flink.add-job', () => {
+            window.showInformationMessage('Not implemented yet.');
+        })
+    );
+
+    context.subscriptions.push(
         commands.registerCommand('flink.describe-jobs', async (jobGroup: JobGroup) => {
             let uri = Uri.parse(`vscode-flink://jobmanagers/${jobGroup.jobManager.id}/jobs/overview/${jobGroup.jobManager.id}-jobs-overview-${Date.now()}.json`);
             await window.showTextDocument(uri);
@@ -127,19 +137,66 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(
         commands.registerCommand('flink.describe-job', async (job: Job) => {
-            let uri = Uri.parse(`vscode-flink://jobmanagers/${job.jobManager.id}/jobs/${job.jobId}/${job.jobId}-${Date.now()}.json`);
+            let uri = Uri.parse(`vscode-flink://jobmanagers/${job.group.jobManager.id}/jobs/${job.id}/${job.id}-${Date.now()}.json`);
             await window.showTextDocument(uri);
         })
     );
 
     context.subscriptions.push(
         commands.registerCommand('flink.copy-job-id', (job: Job) => {
-            env.clipboard.writeText(job.jobId)
+            env.clipboard.writeText(job.id)
                 .then(() => {
-                    window.showInformationMessage(`Copied job ID: ${job.jobId} to clipboard`);
+                    window.showInformationMessage(`Copied job ID: ${job.id} to clipboard`);
                 });
+        })
+    );
+
+    context.subscriptions.push(
+        commands.registerCommand('flink.refresh-jars', (jarGroup: JarGroup) => {
+            jobManagerDataProvider.refresh(jarGroup);
+        })
+    );
+
+    context.subscriptions.push(
+        commands.registerCommand('flink.add-jar', (jarGroup: JarGroup) => {
+            jarGroup.addJar();
+        })
+    );
+
+    context.subscriptions.push(
+        commands.registerCommand('flink.remove-jar', (jar: Jar) => {
+            jar.group.removeJar(jar);
+        })
+    );
+
+    context.subscriptions.push(
+        commands.registerCommand('flink.run-jar', async (jar: Jar) => {
+            jar.run();
+        })
+    );
+
+    context.subscriptions.push(
+        commands.registerCommand('flink.describe-jars', async (jarGroup: JarGroup) => {
+            let uri = Uri.parse(`vscode-flink://jobmanagers/${jarGroup.jobManager.id}/jars/${jarGroup.jobManager.id}-jars-overview-${Date.now()}.json`);
+            await window.showTextDocument(uri);
         }
         ));
+
+    context.subscriptions.push(
+        commands.registerCommand('flink.show-plan', async (jar: Jar) => {
+            let uri = Uri.parse(`vscode-flink://jobmanagers/${jar.group.jobManager.id}/jars/${jar.id}/plan/${jar.id}-${Date.now()}.json`);
+            await window.showTextDocument(uri);
+        })
+    );
+
+    context.subscriptions.push(
+        commands.registerCommand('flink.copy-jar-id', (jar: Jar) => {
+            env.clipboard.writeText(jar.id)
+                .then(() => {
+                    window.showInformationMessage(`Copied jar ID: ${jar.id} to clipboard`);
+                });
+        })
+    );
 }
 
 // this method is called when your extension is deactivated

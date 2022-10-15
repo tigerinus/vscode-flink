@@ -2,20 +2,25 @@ import path = require('path');
 import { v4 as uuidv4 } from 'uuid';
 import { TreeItem, TreeItemCollapsibleState } from "vscode";
 import { TreeData } from "../treeData";
+import { JarGroup } from './jarGroup';
 import { JobGroup } from "./jobGroup";
+import { JobManagerDataProvider } from '../treeDataProvider';
+
 
 export class JobManager extends TreeData {
 
     id: string;
     address: string;
     displayName: string;
+    jobManagerDataProvider: JobManagerDataProvider | null;
 
-    constructor(address: string, displayName: string) {
+    constructor(address: string, displayName: string, jobManagerDataProvider: JobManagerDataProvider | null) {
         super(address, "JobManager");
 
         this.id = uuidv4();
         this.address = address;
         this.displayName = displayName;
+        this.jobManagerDataProvider = jobManagerDataProvider;
     }
 
     getTreeItem(): TreeItem {
@@ -31,6 +36,9 @@ export class JobManager extends TreeData {
     }
 
     getChildren(): TreeData[] {
-        return [new JobGroup(this)];
+        return [
+            new JobGroup(this),
+            new JarGroup(this)
+        ];
     }
 }

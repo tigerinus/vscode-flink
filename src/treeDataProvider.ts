@@ -34,13 +34,14 @@ export class JobManagerDataProvider implements TreeDataProvider<TreeData> {
             return this._context.globalState.get('jobManagerList', [])
                 .map((object: Object) => {
                     // workaround for deserialization into prototype, or methods will be missing.
-                    return Object.assign(new JobManager('', ''), object);
+                    return Object.assign(new JobManager('', '', this), object);
                 });
         }
 
         switch (treeData.type) {
             case 'JobManager':
             case 'JobGroup':
+            case 'JarGroup':
                 return treeData.getChildren();
 
             default:

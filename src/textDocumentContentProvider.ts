@@ -1,4 +1,5 @@
-import path = require("path");
+import axios from 'axios';
+
 import { CancellationToken, Event, ExtensionContext, ProviderResult, TextDocumentContentProvider, Uri } from "vscode";
 import { JobManager } from "./types/jobManager";
 
@@ -22,7 +23,7 @@ export class ContentProvider implements TextDocumentContentProvider {
             let jobManagerList = this._context.globalState.get('jobManagerList', [])
                 .map((object: Object) => {
                     // workaround for deserialization into prototype, or methods will be missing.
-                    return Object.assign(new JobManager('', ''), object);
+                    return Object.assign(new JobManager('', '', null), object);
                 });
             let jobManager = jobManagerList.find(m => m.id === jobManagerId);
 
@@ -34,9 +35,11 @@ export class ContentProvider implements TextDocumentContentProvider {
                 return 'cancelled.';
             }
 
-            return fetch(`${jobManager.address}/${apiPath}`)
-                .then(response => response.json())
-                .catch(error => error.message)
+            let url = `${jobManager.address}/v1/${apiPath}`;
+
+            return axios(url)
+                .then(response => response.data)
+                .catch(error => error.response.data)
                 .then(json => JSON.stringify(json, null, 2));
         }
 

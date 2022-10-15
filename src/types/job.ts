@@ -1,35 +1,35 @@
 import path = require("path");
 import { TreeItem, TreeItemCollapsibleState } from "vscode";
 import { TreeData } from "../treeData";
-import { JobManager } from "./jobManager";
+import { JobGroup } from "./jobGroup";
 
 export class Job extends TreeData {
 
-    jobManager: JobManager;
+    group: JobGroup;
 
-    jobId: string;
-    jobName: string;
-    jobState: string;
+    id: string;
+    name: string;
+    state: string;
 
-    constructor(jobManager: JobManager, jobId: string, jobName: string, jobState: string) {
-        super(jobName, "Job");
+    constructor(group: JobGroup, id: string, name: string, state: string) {
+        super(name, "Job");
 
-        this.jobManager = jobManager;
+        this.group = group;
 
-        this.jobId = jobId;
-        this.jobName = jobName;
-        this.jobState = jobState;
+        this.id = id;
+        this.name = name;
+        this.state = state;
     }
 
     getTreeItem(): TreeItem {
         let treeItem: TreeItem = new TreeItem(this.text, TreeItemCollapsibleState.None);
 
         treeItem.contextValue = 'job';
-        treeItem.id = this.jobId;
-        treeItem.description = this.jobState;
-        treeItem.tooltip = this.jobId;
+        treeItem.id = this.id;
+        treeItem.description = this.state;
+        treeItem.tooltip = this.id;
 
-        switch (this.jobState) {
+        switch (this.state) {
             case 'INITIALIZING':
             case 'RESTARTING':
             case 'RECONCILING':

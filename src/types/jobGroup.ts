@@ -1,5 +1,7 @@
+import axios from 'axios';
+
 import { ProviderResult, TreeItem, TreeItemCollapsibleState } from "vscode";
-import { JobDetails, MultipleJobsDetails } from "../interface/getJobsOverview";
+import { JobDetails, MultipleJobsDetails } from "../interface/jobsOverview";
 import { TreeData } from "../treeData";
 import { Description } from "./description";
 import { Job } from "./job";
@@ -23,30 +25,28 @@ export class JobGroup extends TreeData {
     getChildren(): ProviderResult<TreeData[]> {
         if (this.jobManager.address === 'test:1234') {
             return [
-                new Job(this.jobManager, "1", "Job 1", "INITIALIZING"),
-                new Job(this.jobManager, "2", "Job 2", "CREATED"),
-                new Job(this.jobManager, "3", "Job 3", "RUNNING"),
-                new Job(this.jobManager, "4", "Job 4", "FAILING"),
-                new Job(this.jobManager, "5", "Job 5", "FAILED"),
-                new Job(this.jobManager, "6", "Job 6", "CANCELLING"),
-                new Job(this.jobManager, "7", "Job 7", "CANCELED"),
-                new Job(this.jobManager, "8", "Job 8", "FINISHED"),
-                new Job(this.jobManager, "9", "Job 9", "RESTARTING"),
-                new Job(this.jobManager, "10", "Job 10", "SUSPENDED"),
-                new Job(this.jobManager, "11", "Job 11", "RECONCILING")
+                new Job(this, "1", "Job 1", "INITIALIZING"),
+                new Job(this, "2", "Job 2", "CREATED"),
+                new Job(this, "3", "Job 3", "RUNNING"),
+                new Job(this, "4", "Job 4", "FAILING"),
+                new Job(this, "5", "Job 5", "FAILED"),
+                new Job(this, "6", "Job 6", "CANCELLING"),
+                new Job(this, "7", "Job 7", "CANCELED"),
+                new Job(this, "8", "Job 8", "FINISHED"),
+                new Job(this, "9", "Job 9", "RESTARTING"),
+                new Job(this, "10", "Job 10", "SUSPENDED"),
+                new Job(this, "11", "Job 11", "RECONCILING")
             ];
         }
 
-        return fetch(`${this.jobManager.address}/v1/jobs/overview`)
-            .then(response => {
-                if (!response.ok) {
-                    return [new Description(`(failed to fetch - status code ${response.status})`)];
-                }
+        let url = `${this.jobManager.address}/v1/jobs/overview`;
 
-                let result = response.json() as Promise<MultipleJobsDetails>;
+        return axios.get(url).then(response => {
+            let result = response.data as MultipleJobsDetails;
 
-                return result.then(data =>
-                    data.jobs!.map((job: JobDetails) => new Job(this.jobManager, job.jid!, job.name!, job.state!)));
-            });
+            return result.jobs!.map((job: JobDetails) => new Job(this, job.jid!, job.name!, job.state!));
+        }).catch(error => {
+            return [new Description(`(error getting jobs - status code ${error.response.status})`)];
+        });
     }
 }
