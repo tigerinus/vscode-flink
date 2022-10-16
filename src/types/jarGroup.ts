@@ -3,7 +3,7 @@ import FormData = require('form-data');
 import * as fs from 'fs';
 
 import { ProviderResult, TreeItem, TreeItemCollapsibleState, window } from "vscode";
-import { JarFileInfo, JarListInfo } from "../interface/jars";
+import { JarFileInfo, JarListInfo } from "@tensorsmart/flink-typescript";
 import { TreeData } from "../treeData";
 import { Description } from "./description";
 import { Jar } from "./jar";

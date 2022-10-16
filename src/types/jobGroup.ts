@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { ProviderResult, TreeItem, TreeItemCollapsibleState } from "vscode";
-import { JobDetails, MultipleJobsDetails } from "../interface/jobsOverview";
+import { JobDetails, MultipleJobsDetails } from "@tensorsmart/flink-typescript";
 import { TreeData } from "../treeData";
 import { Description } from "./description";
 import { Job } from "./job";
@@ -44,7 +44,7 @@ export class JobGroup extends TreeData {
         return axios.get(url).then(response => {
             let result = response.data as MultipleJobsDetails;
 
-            return result.jobs!.map((job: JobDetails) => new Job(this, job.jid!, job.name!, job.state!));
+            return result.jobs!.map((job: JobDetails) => new Job(this, job.jobId!, job.jobName!, job.status!));
         }).catch(error => {
             return [new Description(`(error getting jobs - status code ${error.response.status})`)];
         });
