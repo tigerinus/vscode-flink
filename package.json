@@ -291,6 +291,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
+    "@tensorsmart/flink-typescript": "^1.17.0-alpha1",
     "@types/glob": "^7.2.0",
     "@types/lodash": "^4.14.186",
     "@types/mocha": "^9.1.1",
