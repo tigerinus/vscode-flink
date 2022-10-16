@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { ProviderResult, TreeItem, TreeItemCollapsibleState } from "vscode";
-import { JobDetails, MultipleJobsDetails } from "@tensorsmart/flink-typescript";
+import { JobDetails, JobStatus, MultipleJobsDetails, DefaultService } from "@tensorsmart/flink-typescript";
 import { TreeData } from "../treeData";
 import { Description } from "./description";
 import { Job } from "./job";
@@ -25,21 +25,23 @@ export class JobGroup extends TreeData {
     getChildren(): ProviderResult<TreeData[]> {
         if (this.jobManager.address === 'test:1234') {
             return [
-                new Job(this, "1", "Job 1", "INITIALIZING"),
-                new Job(this, "2", "Job 2", "CREATED"),
-                new Job(this, "3", "Job 3", "RUNNING"),
-                new Job(this, "4", "Job 4", "FAILING"),
-                new Job(this, "5", "Job 5", "FAILED"),
-                new Job(this, "6", "Job 6", "CANCELLING"),
-                new Job(this, "7", "Job 7", "CANCELED"),
-                new Job(this, "8", "Job 8", "FINISHED"),
-                new Job(this, "9", "Job 9", "RESTARTING"),
-                new Job(this, "10", "Job 10", "SUSPENDED"),
-                new Job(this, "11", "Job 11", "RECONCILING")
+                new Job(this, "1", "Job 1", JobStatus.INITIALIZING),
+                new Job(this, "2", "Job 2", JobStatus.CREATED),
+                new Job(this, "3", "Job 3", JobStatus.RUNNING),
+                new Job(this, "4", "Job 4", JobStatus.FAILING),
+                new Job(this, "5", "Job 5", JobStatus.FAILED),
+                new Job(this, "6", "Job 6", JobStatus.CANCELLING),
+                new Job(this, "7", "Job 7", JobStatus.CANCELED),
+                new Job(this, "8", "Job 8", JobStatus.FINISHED),
+                new Job(this, "9", "Job 9", JobStatus.RESTARTING),
+                new Job(this, "10", "Job 10", JobStatus.SUSPENDED),
+                new Job(this, "11", "Job 11", JobStatus.RECONCILING)
             ];
         }
 
         let url = `${this.jobManager.address}/v1/jobs/overview`;
+
+        DefaultService.getJobsOverview()
 
         return axios.get(url).then(response => {
             let result = response.data as MultipleJobsDetails;

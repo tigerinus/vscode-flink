@@ -1,5 +1,6 @@
 import path = require("path");
 import { TreeItem, TreeItemCollapsibleState } from "vscode";
+import { JobStatus } from "@tensorsmart/flink-typescript";
 import { TreeData } from "../treeData";
 import { JobGroup } from "./jobGroup";
 
@@ -30,47 +31,47 @@ export class Job extends TreeData {
         treeItem.tooltip = this.id;
 
         switch (this.state) {
-            case 'INITIALIZING':
-            case 'RESTARTING':
-            case 'RECONCILING':
-            case 'CANCELLING':
+            case JobStatus.INITIALIZING:
+            case JobStatus.RESTARTING:
+            case JobStatus.RECONCILING:
+            case JobStatus.CANCELLING:
                 treeItem.iconPath = {
                     light: path.join(__filename, '..', '..', '..', 'resources', 'light', 'loading.svg'),
                     dark: path.join(__filename, '..', '..', '..', 'resources', 'dark', 'loading.svg')
                 };
                 break;
-            case 'CREATED':
+            case JobStatus.CREATED:
                 treeItem.iconPath = {
                     light: path.join(__filename, '..', '..', '..', 'resources', 'light', 'check.svg'),
                     dark: path.join(__filename, '..', '..', '..', 'resources', 'dark', 'check.svg')
                 };
                 break;
-            case 'RUNNING':
+            case JobStatus.RUNNING:
                 treeItem.iconPath = {
                     light: path.join(__filename, '..', '..', '..', 'resources', 'light', 'watch.svg'),
                     dark: path.join(__filename, '..', '..', '..', 'resources', 'dark', 'watch.svg')
                 };
                 break;
-            case 'SUSPENDED':
-            case 'FAILING':
+            case JobStatus.SUSPENDED:
+            case JobStatus.FAILING:
                 treeItem.iconPath = {
                     light: path.join(__filename, '..', '..', '..', 'resources', 'light', 'warning.svg'),
                     dark: path.join(__filename, '..', '..', '..', 'resources', 'dark', 'warning.svg')
                 };
                 break;
-            case 'FAILED':
+            case JobStatus.FAILED:
                 treeItem.iconPath = {
                     light: path.join(__filename, '..', '..', '..', 'resources', 'light', 'error.svg'),
                     dark: path.join(__filename, '..', '..', '..', 'resources', 'dark', 'error.svg')
                 };
                 break;
-            case 'CANCELED':
+            case JobStatus.CANCELED:
                 treeItem.iconPath = {
                     light: path.join(__filename, '..', '..', '..', 'resources', 'light', 'blocked.svg'),
                     dark: path.join(__filename, '..', '..', '..', 'resources', 'dark', 'blocked.svg')
                 };
                 break;
-            case 'FINISHED':
+            case JobStatus.FINISHED:
                 treeItem.iconPath = {
                     light: path.join(__filename, '..', '..', '..', 'resources', 'light', 'pass.svg'),
                     dark: path.join(__filename, '..', '..', '..', 'resources', 'dark', 'pass.svg')
